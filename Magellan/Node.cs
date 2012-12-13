@@ -1,68 +1,65 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 /* notes on DeltaV for node:
  * x = rad
  * z = prograde
  * y = normal
 */
-namespace KSP_Magellan
+namespace KspMagellan
 {
-    public class Node
-    {
-        public Vessel vessel;
-        public enum nodeType
-        {
-            injection,
-            circularize,
-            adjust
-        };
-        private double UT;
-        private Vector3d DV = new Vector3d();
-
-        public void MakeNode(CelestialBody target, nodeType type)
-        {
-            if (type == nodeType.injection)
-            {
-                MakeInjectionNode(target);
-            }
+	public class Node
+	{
+		public Vessel vessel;
+		public enum NodeType
+		{
+			Injection,
+			Circularize,
+			Adjust
         }
+		;
+		double ut;
+		Vector3d dV = new Vector3d ();
 
-        private void MakeInjectionNode(CelestialBody target)
-        {
-            double desiredPhase = Calc.PhaseAngleAtTransfer(target, vessel);
-            double currentPhase = Calc.PhaseAngleNow(target, vessel);
+		public void MakeNode (CelestialBody target, NodeType type)
+		{
+			if (type == NodeType.Injection) {
+				MakeInjectionNode (target);
+			}
+		}
 
-            double difference = currentPhase > desiredPhase ? currentPhase - desiredPhase : 360 - desiredPhase;
+		void MakeInjectionNode (CelestialBody target)
+		{
+			double desiredPhase = Calc.PhaseAngleAtTransfer (target, vessel);
+			double currentPhase = Calc.PhaseAngleNow (target, vessel);
 
-            //not putting node in right place
+			double difference = currentPhase > desiredPhase ? currentPhase - desiredPhase : 360 - desiredPhase;
 
-            double targetangvel = 360/ 138984.38;   //mun's angular velocity
-            double originangvel = 360 / vessel.orbit.period;    //vessel angular velocity
+			//not putting node in right place
 
-            double angveldif = Math.Abs(targetangvel - originangvel);
+			double targetangvel = 360 / 138984.38;           //mun's angular velocity
+			double originangvel = 360 / vessel.orbit.period; //vessel angular velocity
 
-            UT = Planetarium.GetUniversalTime() + difference / angveldif;
+			double angveldif = Math.Abs (targetangvel - originangvel);
 
-            DV.z = Calc.TransferDeltaV(target, vessel);
-            Commit();
-        }
+			ut = Planetarium.GetUniversalTime () + difference / angveldif;
 
-        private void MakeCircularizationNode(CelestialBody target)
-        {
+			dV.z = Calc.TransferDeltaV (target, vessel);
+			Commit ();
+		}
 
-        }
+		void MakeCircularizationNode (CelestialBody target)
+		{
 
-        private void Commit()
-        {
-            vessel.patchedConicSolver.AddManeuverNode(UT);
-            foreach (ManeuverNode mn in vessel.patchedConicSolver.maneuverNodes)
-            {
-                if (mn.UT == UT) mn.DeltaV = DV;
-            }
-            vessel.patchedConicSolver.UpdateFlightPlan();
-        }
-    }
+		}
+
+		void Commit ()
+		{
+			vessel.patchedConicSolver.AddManeuverNode (ut);
+			foreach (ManeuverNode mn in vessel.patchedConicSolver.maneuverNodes) {
+				if (mn.UT == ut)
+					mn.DeltaV = dV;
+			}
+			vessel.patchedConicSolver.UpdateFlightPlan ();
+		}
+	}
 }

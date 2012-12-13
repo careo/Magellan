@@ -7,7 +7,7 @@
     <ProjectGuid>{94156F0A-54DF-408C-A13D-C2121DAC7242}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KSP_Magellan</RootNamespace>
+    <RootNamespace>KspMagellan</RootNamespace>
     <AssemblyName>Magellan</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -49,6 +49,9 @@
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetPath)" "C:\Users\chris\Downloads\KSP .18\Plugins"</PostBuildEvent>
   </PropertyGroup>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Core" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

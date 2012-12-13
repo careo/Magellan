@@ -1,20 +1,20 @@
 ﻿using System.Collections.Generic;
 
-namespace KSP_Magellan
+namespace KspMagellan
 {
-    public class Course
-    {
-        public Vessel vessel;
-        private bool plotted = false;
-        private List<Node> courseNodes = new List<Node>();
+	public class Course
+	{
+		public Vessel vessel;
+		bool plotted = false;
+		List<Node> courseNodes = new List<Node> ();
 
-        public void PlotCourse(CelestialBody target)
-        {
-            courseNodes.Add(new Node());
-            courseNodes[0].vessel = vessel;
-            courseNodes[0].MakeNode(target, Node.nodeType.injection);
+		public void PlotCourse (CelestialBody target)
+		{
+			courseNodes.Add (new Node ());
+			courseNodes [0].vessel = vessel;
+			courseNodes [0].MakeNode (target, Node.NodeType.Injection);
 
-            plotted = true;
-        }
-    }
+			plotted = true;
+		}
+	}
 }
